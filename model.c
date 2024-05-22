@@ -16,9 +16,8 @@ float rand_float(void){
     
     return (float) rand() / (float) RAND_MAX;
 }
-int main(){
-    srand(time(0));
-    float w = rand_float()*10.0f;
+
+float cost(float w){
     float result = 0.0f;
     for(int i=0; i<train_count; i++){
         float x = train[i][0];
@@ -27,6 +26,21 @@ int main(){
         result += d*d;
     }
     result /= train_count;
-    printf("%f\n", result);
+    // printf("%f\n", result);
+    return result;
+};
+
+int main(){
+    srand(time(0));
+    float w = rand_float()*10.0f;
+    float eps = 1e-3;
+    for(size_t i=0; i<500;i++){
+       float dcost = (cost(w+eps) - cost(w))/eps;
+       w-= eps*dcost;
+       printf("%f\n", cost(w));
+
+    }
+    printf("------------\n");
+    printf("%f\n", w);
     return 0;
 }
