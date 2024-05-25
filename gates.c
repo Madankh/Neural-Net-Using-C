@@ -23,8 +23,28 @@ float cost(float w1, float w2){
     }
     result /=train_count;
     return result;
-}
+};
+
+float rand_float(void){
+    return (float) rand() / (float) RAND_MAX;
+};
+
 
 int main(void){
-    float w1 = rand_float()*10;
+    srand(69);
+    float w1 = rand_float();
+    float w2 = rand_float();
+
+    float eps = 1e-3;
+    float rate = 1e-3;
+
+    for(size_t i =0; i<2000; i++){
+        float c = cost(w1,w2);
+        printf("W1 = %f, W2 = %f, c=%f\n", w1,w2,c);
+        float dw1 = (cost(w1 + eps, w2) - c)/eps;
+        float dw2 = (cost(w1, w2+eps) - c)/eps;
+        w1 -= rate*dw1;
+        w2 -= rate*dw2;
+    }
+    printf("W1 = %f , W2 = %f \n", w1, w2);
 }
